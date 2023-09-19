@@ -1,11 +1,15 @@
 package com.online.shop.service;
 
+import com.online.shop.entity.Image;
 import com.online.shop.entity.Product;
+import com.online.shop.exceptions.ProductNotFoundException;
 import com.online.shop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -36,5 +40,15 @@ public class ProductService {
     }
 
     // other methods as needed
+    public List<Image> getProductImages(Long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            return product.getImages();
+        } else {
+            throw new ProductNotFoundException("Product not found with id: " + productId);
+        }
+    }
 }
 
