@@ -3,6 +3,7 @@ package com.online.shop.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "images")
 public class Image {
 
     @Id

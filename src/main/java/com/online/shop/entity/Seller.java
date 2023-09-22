@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "sellers")
 public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,8 +16,8 @@ public class Seller {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
-    private List<Product> products;
+//    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+//    private List<Product> products;
 
     // Constructors, getters, setters, and other methods
 
@@ -56,12 +57,12 @@ public class Seller {
         this.email = email;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+//    public List<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//    }
 }
 

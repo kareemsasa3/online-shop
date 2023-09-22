@@ -1,10 +1,11 @@
 package com.online.shop.entity;
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -15,39 +16,52 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private Double price;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private Seller seller;
-
     @Column(nullable = false)
-    private Integer stockQuantity;
+    private int stockQuantity;
 
+    @JsonIgnore
     @Column(name = "created_at", nullable = false)
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
+    @JsonIgnore
     @Column(name = "updated_at", nullable = false)
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Image> images;
+
+//    @ManyToOne
+//    @JoinColumn(name = "seller_id")
+//    private Seller seller;
 
     // Constructors
 
     public Product() {
         // Default constructor
+    }
+
+    public Product(String name, Double price, Category category, int stockQuantity, LocalDateTime createdAt) {
+        this.name = name;
+        this.price = price;
+        this.category = category;
+        this.stockQuantity = stockQuantity;
+        this.createdAt = createdAt;
+        this.updatedAt = createdAt;
     }
 
     // Getters and setters for other attributes
@@ -76,11 +90,11 @@ public class Product {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -92,35 +106,35 @@ public class Product {
         this.category = category;
     }
 
-    public Seller getSeller() {
-        return seller;
-    }
+//    public Seller getSeller() {
+//        return seller;
+//    }
+//
+//    public void setSeller(Seller seller) {
+//        this.seller = seller;
+//    }
 
-    public void setSeller(Seller seller) {
-        this.seller = seller;
-    }
-
-    public Integer getStockQuantity() {
+    public int getStockQuantity() {
         return stockQuantity;
     }
 
-    public void setStockQuantity(Integer stockQuantity) {
+    public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 

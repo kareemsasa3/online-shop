@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
+@Table(name = "promotions")
 public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

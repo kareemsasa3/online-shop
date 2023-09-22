@@ -1,37 +1,40 @@
 package com.online.shop.controller;
 
-import com.online.shop.entity.Product;
 import com.online.shop.service.ImageService;
-import com.online.shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
-@RequestMapping("/api/images")
+@RequestMapping("/images")
 public class ImageController {
 
     @Autowired
     private ImageService imageService;
 
-    @Autowired
-    private ProductService productService;
-
-    @PostMapping("/upload/{productId}")
-    public ResponseEntity<String> uploadImage(
-            @PathVariable("productId") Long productId,
-            @RequestParam("file") MultipartFile file) {
-
-        Product product = productService.getProductById(productId);
-        if (product == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            imageService.saveImage(file);
+            return ResponseEntity.ok("Image uploaded successfully");
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Failed to upload image");
         }
+    }
 
-        String imageUrl = imageService.uploadImage(product, file);
-
-        return ResponseEntity.ok().body(imageUrl);
+    @GetMapping("/{imageName}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String imageName) {
+        try {
+            byte[] imageBytes = imageService.getImage(imageName);
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
 }
+
 

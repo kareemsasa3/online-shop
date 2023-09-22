@@ -3,6 +3,7 @@ package com.online.shop.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "shipping_info")
 public class Shipping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
