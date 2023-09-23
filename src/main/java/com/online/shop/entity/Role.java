@@ -15,7 +15,7 @@ public class Role {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
+    private Set<Customer> customers = new HashSet<>();
 
     // Constructors, getters, and setters
 
@@ -45,11 +45,11 @@ public class Role {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Set<Customer> getUsers() {
+        return customers;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUsers(Set<Customer> customers) {
+        this.customers = customers;
     }
 }

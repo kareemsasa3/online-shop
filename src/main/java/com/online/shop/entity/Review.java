@@ -22,7 +22,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
@@ -35,11 +35,11 @@ public class Review {
     }
 
     // Parameterized constructor
-    public Review(String content, int rating, Date createdAt, User user, Product product) {
+    public Review(String content, int rating, Date createdAt, Customer customer, Product product) {
         this.content = content;
         this.rating = rating;
         this.createdAt = createdAt;
-        this.user = user;
+        this.customer = customer;
         this.product = product;
     }
 
@@ -77,12 +77,12 @@ public class Review {
         this.createdAt = createdAt;
     }
 
-    public User getUser() {
-        return user;
+    public Customer getUser() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Customer customer) {
+        this.customer = customer;
     }
 
     public Product getProduct() {

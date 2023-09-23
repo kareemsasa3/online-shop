@@ -1,5 +1,7 @@
 package com.online.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,14 +12,36 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imagePath;  // Path to the stored image
+    @Lob
+    @Column(name = "image_data", nullable = false)
+    private String imageData;
+
+    @Column(name = "image_name")
+    private String imageName;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JsonIgnore
+    @JoinColumn(name = "product_id")
+    private Product product;  // Reference to the Product
 
-    // Getters and setters
+    // Constructors, getters, and setters
 
+    // Constructors
+    public Image() {
+    }
+
+    public Image(String imageData, String imageName, Product product) {
+        this.imageData = imageData;
+        this.imageName = imageName;
+        this.product = product;
+    }
+
+    public Image(String imageData, String imageName) {
+        this.imageData = imageData;
+        this.imageName = imageName;
+    }
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -26,12 +50,20 @@ public class Image {
         this.id = id;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImageData() {
+        return imageData;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageData(String imageData) {
+        this.imageData = imageData;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public Product getProduct() {
@@ -42,3 +74,4 @@ public class Image {
         this.product = product;
     }
 }
+

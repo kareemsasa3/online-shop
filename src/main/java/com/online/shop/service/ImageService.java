@@ -1,28 +1,65 @@
 package com.online.shop.service;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.online.shop.entity.Image;
+import com.online.shop.entity.Product;
+import com.online.shop.repository.ImageRepository;
+import com.online.shop.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImageService {
 
-    @Value("${image.upload.directory}")
-    private String uploadDirectory;
+    @Autowired
+    private ImageRepository imageRepository;
 
-    public void saveImage(MultipartFile file) throws IOException {
-        Path filePath = Paths.get(uploadDirectory, file.getOriginalFilename());
-        Files.write(filePath, file.getBytes());
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Transactional
+    public Image uploadImage(MultipartFile file, String imageName, Long productId) throws IOException {
+        String encodedImageData = convertToBase64(file);
+
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isEmpty()) {
+            throw new EntityNotFoundException("Product not found with id: " + productId);
+        }
+
+        Product product = productOptional.get();
+        Image image = new Image(encodedImageData, imageName, product);
+
+        return imageRepository.save(image);
     }
 
-    public byte[] getImage(String imageName) throws IOException {
-        Path imagePath = Paths.get(uploadDirectory, imageName);
-        return Files.readAllBytes(imagePath);
+    private static String convertToBase64(MultipartFile file) throws IOException {
+        byte[] imageData = file.getBytes();
+        return Base64.getEncoder().encodeToString(imageData);
+    }
+
+    public List<Image> getAllImages() {
+        return imageRepository.findAll();
+    }
+
+    public Optional<Image> getImageById(Long id) {
+        return imageRepository.findById(id);
+    }
+
+    public List<Image> getImagesFromProductId(Long productId) {
+        return imageRepository.findByProductId(productId);
+    }
+
+    public void saveImage(Image image) {
+        imageRepository.save(image);
     }
 }
+
+
 

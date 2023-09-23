@@ -1,11 +1,13 @@
 package com.online.shop.service;
 
 import com.online.shop.entity.Category;
+import com.online.shop.entity.Product;
 import com.online.shop.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +22,10 @@ public class CategoryService {
     public Category createCategory(Category category) {
         // implement validation or business logic if needed
         return categoryRepository.save(category);
+    }
+
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
     }
 
     public Category getCategoryById(Long id) {

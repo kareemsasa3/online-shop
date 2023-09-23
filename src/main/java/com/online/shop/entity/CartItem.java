@@ -18,7 +18,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Customer customer;
 
     // Constructors, getters, and setters
 
@@ -26,10 +26,10 @@ public class CartItem {
         // Default constructor
     }
 
-    public CartItem(Product product, int quantity, User user) {
+    public CartItem(Product product, int quantity, Customer customer) {
         this.product = product;
         this.quantity = quantity;
-        this.user = user;
+        this.customer = customer;
     }
 
     // Getters and setters
@@ -58,11 +58,11 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public User getUser() {
-        return user;
+    public Customer getUser() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Customer customer) {
+        this.customer = customer;
     }
 }

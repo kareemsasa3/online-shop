@@ -1,5 +1,6 @@
 package com.online.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -25,29 +26,22 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 
     @Column(nullable = false)
     private int stockQuantity;
 
-    @JsonIgnore
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @JsonIgnore
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Image> images;
-
-//    @ManyToOne
-//    @JoinColumn(name = "seller_id")
-//    private Seller seller;
 
     // Constructors
 
@@ -106,14 +100,6 @@ public class Product {
         this.category = category;
     }
 
-//    public Seller getSeller() {
-//        return seller;
-//    }
-//
-//    public void setSeller(Seller seller) {
-//        this.seller = seller;
-//    }
-
     public int getStockQuantity() {
         return stockQuantity;
     }
@@ -147,7 +133,5 @@ public class Product {
     }
 
     // Additional methods or business logic specific to the Product entity
-
-    // ...
 }
 

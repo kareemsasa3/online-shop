@@ -11,7 +11,7 @@ public class Shipping {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Customer customer;
 
     @Column(nullable = false)
     private String address;

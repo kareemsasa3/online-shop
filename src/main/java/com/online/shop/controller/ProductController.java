@@ -2,13 +2,11 @@ package com.online.shop.controller;
 
 import com.online.shop.entity.Image;
 import com.online.shop.entity.Product;
+import com.online.shop.service.ImageService;
 import com.online.shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,17 +17,42 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    // Endpoints...
+    @Autowired
+    private ImageService imageService;
+
+    // Other endpoints...
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<Product>> getProducts() {
+        List<Product> products = productService.getProducts();
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/{categoryName}")
+    public ResponseEntity<List<Product>> getProductsFromCategoryName(@PathVariable String categoryName) {
+        List<Product> categoryProducts = productService.getProductsFromCategoryName(categoryName);
+        return ResponseEntity.ok(categoryProducts);
+    }
+
     @GetMapping("/{productId}/images")
-    public List<Image> getProductImages(@PathVariable Long productId) {
-        return productService.getProductImages(productId);
+    public ResponseEntity<List<Image>> getImagesFromProductId(@PathVariable Long productId) {
+        List<Image> images = imageService.getImagesFromProductId(productId);
+        return ResponseEntity.ok(images);
+    }
+
+    @PostMapping("/{productId}/images")
+    public ResponseEntity<String> addImageToProduct(@PathVariable Long productId, @RequestBody Image image) {
+        // Associate the image with the product
+        Product product = productService.getProductById(productId);
+        if (product == null) {
+            return ResponseEntity.badRequest().body("Product not found with id: " + productId);
+        }
+
+        image.setProduct(product);
+        imageService.saveImage(image);
+
+        return ResponseEntity.ok("Image added successfully for product with id: " + productId);
     }
 }
+
 

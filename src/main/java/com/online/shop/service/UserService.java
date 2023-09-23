@@ -1,6 +1,6 @@
 package com.online.shop.service;
 
-import com.online.shop.entity.User;
+import com.online.shop.entity.Customer;
 import com.online.shop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,19 +16,19 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(User user) {
+    public Customer createUser(Customer customer) {
         // implement validation or business logic if needed
-        return userRepository.save(user);
+        return userRepository.save(customer);
     }
 
-    public User getUserById(Long id) {
+    public Customer getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
-    public User updateUser(User user) {
+    public Customer updateUser(Customer customer) {
         // implement validation or business logic if needed
-        return userRepository.save(user);
+        return userRepository.save(customer);
     }
 
     public void deleteUserById(Long id) {

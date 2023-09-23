@@ -12,8 +12,8 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
@@ -31,8 +31,8 @@ public class Order {
         // Default constructor
     }
 
-    public Order(User user, List<OrderItem> orderItems, Date orderDate, double totalAmount) {
-        this.user = user;
+    public Order(Customer customer, List<OrderItem> orderItems, Date orderDate, double totalAmount) {
+        this.customer = customer;
         this.orderItems = orderItems;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
@@ -48,12 +48,12 @@ public class Order {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Customer getUser() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Customer customer) {
+        this.customer = customer;
     }
 
     public List<OrderItem> getOrderItems() {
