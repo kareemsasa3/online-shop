@@ -28,9 +28,9 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/{categoryName}")
-    public ResponseEntity<List<Product>> getProductsFromCategoryName(@PathVariable String categoryName) {
-        List<Product> categoryProducts = productService.getProductsFromCategoryName(categoryName);
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Product>> getProductsFromCategoryId(@PathVariable Long categoryId) {
+        List<Product> categoryProducts = productService.getProductsFromCategoryId(categoryId);
         return ResponseEntity.ok(categoryProducts);
     }
 

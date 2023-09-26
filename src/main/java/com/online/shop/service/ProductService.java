@@ -36,8 +36,8 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    public List<Product> getProductsFromCategoryName(String categoryName) {
-        return productRepository.findByCategoryName(categoryName);
+    public List<Product> getProductsFromCategoryId(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId);
     }
 
     public void saveProduct(Product product) {
