@@ -1,13 +1,9 @@
 package com.online.shop.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -40,13 +36,10 @@ public class Product {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Image> images;
-
-    // Constructors
+    @Column(name = "image_url")
+    private String imageUrl;
 
     public Product() {
-        // Default constructor
     }
 
     public Product(String name, Double price, Category category, int stockQuantity, LocalDateTime createdAt) {
@@ -57,8 +50,6 @@ public class Product {
         this.createdAt = createdAt;
         this.updatedAt = createdAt;
     }
-
-    // Getters and setters for other attributes
 
     public Long getId() {
         return id;
@@ -124,14 +115,12 @@ public class Product {
         this.updatedAt = updatedAt;
     }
 
-    public List<Image> getImages() {
-        return images;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImages(List<Image> images) {
-        this.images = images;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
-
-    // Additional methods or business logic specific to the Product entity
 }
 
