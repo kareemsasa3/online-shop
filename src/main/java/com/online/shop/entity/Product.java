@@ -1,11 +1,15 @@
 package com.online.shop.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 @Table(name = "products")
 public class Product {
 
@@ -13,9 +17,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Product name is required")
     @Column(nullable = false)
     private String name;
 
+    @NotNull(message = "Price is required")
+    @Positive(message = "Price must be a positive value")
     @Column(nullable = false, precision = 10, scale = 2)
     private Double price;
 
@@ -24,103 +31,40 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonBackReference
     private Category category;
 
+    @NotNull(message = "Stock quantity is required")
+    @Positive(message = "Stock quantity must be a positive value")
     @Column(nullable = false)
     private int stockQuantity;
 
+    @NotNull(message = "Creation timestamp is required")
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @NotNull(message = "Update timestamp is required")
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "image_url")
+    @NotBlank(message = "Image URL is required")
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
     public Product() {
+        // Default constructor
     }
 
-    public Product(String name, Double price, Category category, int stockQuantity, LocalDateTime createdAt) {
+    public Product(String name, Double price, String description, Category category, int stockQuantity,
+                   LocalDateTime createdAt, LocalDateTime updatedAt, String imageUrl) {
         this.name = name;
         this.price = price;
-        this.category = category;
-        this.stockQuantity = stockQuantity;
-        this.createdAt = createdAt;
-        this.updatedAt = createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public int getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 }
+
 

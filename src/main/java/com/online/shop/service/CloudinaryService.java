@@ -3,8 +3,6 @@ package com.online.shop.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.online.shop.exceptions.CloudinaryException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,14 +13,27 @@ import java.util.Map;
 
 @Service
 public class CloudinaryService {
-
-    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
-
     @Value("${cloudinary.folder}")
     private String folderName;
 
     @Autowired
     private Cloudinary cloudinary;
+
+    public String fetchImageUrlByName(String name) {
+        Map<String, String> productNameToImageUrlMap = fetchImageUrls();
+
+        // check if provided name exists in the map
+        if (productNameToImageUrlMap.containsKey(name)) {
+            System.out.println("Key found: " + name);
+            return productNameToImageUrlMap.get(name);
+        } else {
+            System.out.println("Key not found: " + name);
+            for (String key : productNameToImageUrlMap.keySet()) {
+                System.out.println("The following key was found: " + key);
+            }
+            throw new RuntimeException("Image URL not found for the provided name: " + name);
+        }
+    }
 
     public Map<String, String> fetchImageUrls() {
         Map<String, String> productNameToImageUrlMap = new HashMap<>();
@@ -47,17 +58,14 @@ public class CloudinaryService {
         } catch (Exception e) {
             handleUnexpectedException(e);
         }
-
         return productNameToImageUrlMap;
     }
 
     private void handleCloudinaryException(CloudinaryException e) {
-        logger.error("CloudinaryException: " + e.getMessage());
         throw e;
     }
 
     private void handleUnexpectedException(Exception e) {
-        logger.error("Exception: " + e.getMessage());
         throw new RuntimeException("An unexpected error occurred.", e);  // Rethrow to propagate the exception
     }
 
