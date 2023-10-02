@@ -21,18 +21,7 @@ public class CloudinaryService {
 
     public String fetchImageUrlByName(String name) {
         Map<String, String> productNameToImageUrlMap = fetchImageUrls();
-
-        // check if provided name exists in the map
-        if (productNameToImageUrlMap.containsKey(name)) {
-            System.out.println("Key found: " + name);
-            return productNameToImageUrlMap.get(name);
-        } else {
-            System.out.println("Key not found: " + name);
-            for (String key : productNameToImageUrlMap.keySet()) {
-                System.out.println("The following key was found: " + key);
-            }
-            throw new RuntimeException("Image URL not found for the provided name: " + name);
-        }
+        return productNameToImageUrlMap.getOrDefault("squishmallow/" + name, null);
     }
 
     public Map<String, String> fetchImageUrls() {

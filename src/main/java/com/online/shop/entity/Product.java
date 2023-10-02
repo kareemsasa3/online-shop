@@ -1,6 +1,9 @@
 package com.online.shop.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,7 +12,9 @@ import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Table(name = "products")
 public class Product {
 

@@ -16,7 +16,6 @@ public class ProductDTO {
 
     private String description;
 
-    @NotBlank(message = "Category is required")
     private String categoryName;
 
     public ProductDTO(String name, Double price, String description, String categoryName) {
@@ -25,11 +24,4 @@ public class ProductDTO {
         this.description = description;
         this.categoryName = categoryName;
     }
-
-    public Category toCategory() {
-        Category category = new Category();
-        category.setName(this.categoryName);
-        return category;
-    }
-
 }
